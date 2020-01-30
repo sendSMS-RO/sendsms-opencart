@@ -48,7 +48,7 @@ class ControllerExtensionModuleSendsms extends Controller
         $phone = $this->validatePhone($phone);
         $message = $this->cleanDiacritice($message);
 
-        if (!empty($phone) && !empty($username) && !empty($password)) {
+        if (!empty($phone) && !empty($username) && !empty($password) && !empty($message)) {
             $curl = curl_init();
             curl_setopt($curl, CURLOPT_HEADER, 0);
             curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
