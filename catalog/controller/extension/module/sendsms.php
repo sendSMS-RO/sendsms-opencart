@@ -10,11 +10,12 @@ class ControllerExtensionModuleSendsms extends Controller
         $order = $this->model_checkout_order->getOrder($orderId);
         $oldOrderStatusId = $order['order_status_id'];
 
-        if ($oldOrderStatusId != $orderStatusId) {
+        $enabled = $this->config->get('module_sendsms_status');
+
+        if ($oldOrderStatusId != $orderStatusId && $enabled == '1') {
             # get text for event
             $this->load->model('setting/setting');
             $message = $this->config->get('module_sendsms_message_'.$orderStatusId);
-            //print_r($order);
 
             # replace variables in text
             $replace = array(
@@ -48,11 +49,21 @@ class ControllerExtensionModuleSendsms extends Controller
         $phone = $this->validatePhone($phone);
         $message = $this->cleanDiacritice($message);
 
-        if (!empty($phone) && !empty($username) && !empty($password) && !empty($message)) {
+        if (!empty($phone) && !empty($username) && !empty($password) && !empty(trim($message))) {
             $curl = curl_init();
+            $params = array(
+                'action' => 'message_send',
+                'username' => $username,
+                'password' => $password,
+                'to' => $phone,
+                'text' => $message
+            );
+            if (!empty(trim($from))) {
+                $params['from'] = $from;
+            }
             curl_setopt($curl, CURLOPT_HEADER, 0);
             curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
-            curl_setopt($curl, CURLOPT_URL, 'https://hub.sendsms.ro/json?action=message_send&username='.urlencode($username).'&password='.urlencode($password).'&from='.urlencode($from).'&to='.urlencode($phone).'&text='.urlencode($message));
+            curl_setopt($curl, CURLOPT_URL, 'https://api.sendsms.ro/json?'.http_build_query($params));
             curl_setopt($curl, CURLOPT_HTTPHEADER, array("Connection: keep-alive"));
             curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
 

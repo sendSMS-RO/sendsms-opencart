@@ -14,11 +14,22 @@ class ModelExtensionSendsmsSend extends Model
         $phone = $this->validatePhone($phone);
         $message = $this->cleanDiacritice($message);
 
-        if (!empty($phone) && !empty($username) && !empty($password) && !empty($message)) {
+        if (!empty($phone) && !empty($username) && !empty($password) && !empty(trim($message))) {
+            $params = array(
+                'action' => 'message_send',
+                'username' => $username,
+                'password' => $password,
+                'to' => $phone,
+                'text' => $message
+            );
+            if (!empty(trim($from))) {
+                $params['from'] = $from;
+            }
+
             $curl = curl_init();
             curl_setopt($curl, CURLOPT_HEADER, 0);
             curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
-            curl_setopt($curl, CURLOPT_URL, 'https://hub.sendsms.ro/json?action=message_send&username='.urlencode($username).'&password='.urlencode($password).'&from='.urlencode($from).'&to='.urlencode($phone).'&text='.urlencode($message));
+            curl_setopt($curl, CURLOPT_URL, 'https://api.sendsms.ro/json?'.http_build_query($params));
             curl_setopt($curl, CURLOPT_HTTPHEADER, array("Connection: keep-alive"));
             curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
 
