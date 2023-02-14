@@ -86,7 +86,7 @@
                         <div class="form-group">
                             <label class="col-sm-2 control-label" for="input-sendsms-message-{{ status.order_status_id }}">{{ entry_message }}: {{ status.name }}</label>
                             <div class="col-sm-10">
-                                <textarea name="module_sendsms_message_{{ status.order_status_id }}" id="input-sendsms-message-{{ status.order_status_id }}" rows="5" class="form-control sendsms_char_count" maxlength="160">
+                                <textarea name="module_sendsms_message_{{ status.order_status_id }}" id="input-sendsms-message-{{ status.order_status_id }}" rows="5" class="form-control sendsms_char_count">
                                     {{- attribute(_context, 'sendsms_message_'~status.order_status_id) -}}
                                 </textarea>
                                 <p>160 {{ entry_characters_left }}</p>
@@ -103,14 +103,19 @@
     var sendsms_char_count = document.getElementsByClassName('sendsms_char_count');
     for (var i = 0; i < sendsms_char_count.length; i++) {
         var sendsms_element = sendsms_char_count[i];
+        var sms_no = 1;
         sendsms_element.onkeyup = function() {
             var text_length = this.value.length;
             var text_remaining = 160 - text_length;
-            this.nextElementSibling.innerHTML = text_remaining + ' {{ entry_characters_left }}';
+            sms_no = Math.ceil(text_length/160);
+            var color = (sms_no > 1) ? '#ff0000' : '#000';
+            this.nextElementSibling.innerHTML = '<span style="color: ' + color + ';">{{ entry_sms }}: ' + sms_no + '</span> / ' + text_length + ' {{ entry_characters }}';
         };
         var text_length = sendsms_element.value.length;
         var text_remaining = 160 - text_length;
-        sendsms_element.nextElementSibling.innerHTML = text_remaining + ' {{ entry_characters_left }}';
+        sms_no = Math.ceil(text_length/160);
+        var color = (sms_no > 1) ? '#ff0000' : '#000';
+        sendsms_element.nextElementSibling.innerHTML = '<span style="color: ' + color + ';">{{ entry_sms }}: ' + sms_no + '</span> / ' + text_length + ' {{ entry_characters }}';
     }
 </script>
 {{ footer }}

@@ -29,6 +29,8 @@ $_['entry_yes'] = 'Yes';
 $_['entry_no'] = 'No';
 $_['entry_characters_left'] = 'characters left';
 $_['entry_available_vars'] = 'Available variables';
+$_['entry_sms'] = 'SMS';
+$_['entry_characters'] = ' characters';
 
 // About page
 $_['about_line1'] = 'Pentru a folosi modulul, vă rugăm să introduceți datele de autentificare în pagina de configurare.';
