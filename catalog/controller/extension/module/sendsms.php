@@ -5,11 +5,6 @@ class ControllerExtensionModuleSendsms extends Controller
     {
         $orderStatusId = $data[1];
         $orderId = $data[0];
-        $notify = $data[3];
-        if (empty($notify)) {
-            // if notify customer wasn't checked, don't send sms
-            return;
-        }
 
         $this->load->model('checkout/order');
         $order = $this->model_checkout_order->getOrder($orderId);
