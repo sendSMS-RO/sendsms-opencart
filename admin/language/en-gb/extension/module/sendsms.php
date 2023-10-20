@@ -31,6 +31,7 @@ $_['entry_characters_left'] = 'characters left';
 $_['entry_available_vars'] = 'Available variables';
 $_['entry_sms'] = 'SMS';
 $_['entry_characters'] = ' characters';
+$_['entry_short_url'] = 'Micșorare url? (Vă rugăm să folosiți doar linkuri care încep cu https:// sau http://)';
 
 // About page
 $_['about_line1'] = 'Pentru a folosi modulul, vă rugăm să introduceți datele de autentificare în pagina de configurare.';

@@ -16,6 +16,9 @@ class ControllerExtensionModuleSendsms extends Controller
             # get text for event
             $this->load->model('setting/setting');
             $message = $this->config->get('module_sendsms_message_'.$orderStatusId);
+            
+            # get short url value for status
+            $shortUrl = !empty($this->config->get('module_sendsms_short_url_' . $orderStatusId));
 
             # replace variables in text
             $replace = array(
@@ -32,11 +35,11 @@ class ControllerExtensionModuleSendsms extends Controller
             }
             
             # send sms
-            $this->send_sms($order['telephone'], $message);
+            $this->send_sms($order['telephone'], $message, 'order', $shortUrl);
         }
     }
 
-    public function send_sms($phone, $message, $type = 'order')
+    public function send_sms($phone, $message, $type = 'order', $shortUrl = false)
     {
         $this->load->model('setting/setting');
         $username = $this->config->get('module_sendsms_username');
@@ -61,9 +64,12 @@ class ControllerExtensionModuleSendsms extends Controller
             if (!empty(trim($from))) {
                 $params['from'] = $from;
             }
+            if ($shortUrl) {
+                $params['short'] = 1;
+            }
             curl_setopt($curl, CURLOPT_HEADER, 0);
             curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
-            curl_setopt($curl, CURLOPT_URL, 'https://api.sendsms.ro/json?'.http_build_query($params));
+            curl_setopt($curl, CURLOPT_URL, 'https://api.sendsms.ro/json2?'.http_build_query($params));
             curl_setopt($curl, CURLOPT_HTTPHEADER, array("Connection: keep-alive"));
             curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
 

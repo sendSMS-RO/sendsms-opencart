@@ -121,6 +121,14 @@ class ControllerExtensionModuleSendsms extends Controller {
             } else {
                 $data['sendsms_message_'.$status['order_status_id']] = '';
             }
+            
+            if (isset($this->request->post['module_sendsms_short_url_'.$status['order_status_id']])) {
+                $data['sendsms_short_url_'.$status['order_status_id']] = $this->request->post['module_sendsms_short_url_'.$status['order_status_id']];
+            } elseif ($this->config->get('module_sendsms_short_url_'.$status['order_status_id'])) {
+                $data['sendsms_short_url_'.$status['order_status_id']] = $this->config->get('module_sendsms_short_url_'.$status['order_status_id']);
+            } else {
+                $data['sendsms_short_url_'.$status['order_status_id']] = 0;
+            }
         }
 
         # page links
