@@ -65,11 +65,11 @@ class ControllerExtensionModuleSendsms extends Controller
                 $params['from'] = $from;
             }
             if ($shortUrl) {
-                $params['short'] = 1;
+                $params['short'] = 'true';
             }
             curl_setopt($curl, CURLOPT_HEADER, 0);
             curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
-            curl_setopt($curl, CURLOPT_URL, 'https://api.sendsms.ro/json2?'.http_build_query($params));
+            curl_setopt($curl, CURLOPT_URL, 'https://api.sendsms.ro/json?'.http_build_query($params));
             curl_setopt($curl, CURLOPT_HTTPHEADER, array("Connection: keep-alive"));
             curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
 
